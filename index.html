@@ -1,16 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Github Page demo</title>
+    <title>字符串格式化</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="index.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: '#8f6163',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
-<div id="main-content">
+<div id="app">
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <img class="mx-auto h-10 w-auto" src="nsfw.png">
+        </div>
 
+        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div style="margin-bottom: 20px">
+                <label for="url" class="block text-sm font-medium leading-6 text-gray-900">原始字符串</label>
+                <div class="mt-2">
+                    <input v-model="url" id="url" name="url"
+                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+            </div>
+            <div style="margin-bottom: 20px">
+                <button @click="parse"
+                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    格式化
+                </button>
+            </div>
+            <div style="margin-bottom: 20px">
+                <div class="flex items-center justify-between">
+                    <label for="result" class="block text-sm font-medium leading-6 text-gray-900">格式化结果</label>
+                </div>
+                <div class="mt-2">
+                    <input id="result" name="result"
+                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    const {createApp, ref} = Vue
+
+    createApp({
+        setup() {
+            const url = ref('')
+            const result = ref('')
+            return {
+                url,
+                result
+            }
+        },
+        methods: {
+            parse() {
+                if (url.value) {
+                    if (url.value.indexOf('docker pull') !== -1) {
+                        result.value = url.value.replace('pull ', 'pull docker.mirrors.sjtug.sjtu.edu.cn/')
+                    } else {
+                        let finalstring = 'compatibility#/CloudNAS/CloudDrive/WebDAV/PikPak/R18/'
+                        finalstring += url.value.replace(/-/g, '/')
+                        finalstring += '#/Video/Porn/AV#/CloudNAS/CloudDrive/WebDAV/PikPak/R18/'
+                        finalstring += url.value.replace(/-/g, '/')
+                        result.value = finalstring
+                    }
+                }
+            }
+        }
+    }).mount('#app')
+</script>
 </body>
 </html>
