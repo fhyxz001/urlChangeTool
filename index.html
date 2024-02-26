@@ -71,9 +71,9 @@
                     if (url.value.indexOf('docker pull') !== -1) {
                         result.value = url.value.replace('pull ', 'pull docker.mirrors.sjtug.sjtu.edu.cn/')
                     } else {
-                        let finalstring = 'compatibility#/CloudNAS/CloudDrive/WebDAV/PikPak/'
+                        let finalstring = 'compatibility#/CloudNAS/CloudDrive/WebDAV/PikPak/Mount'
                         finalstring += url.value.replace(/-/g, '/')
-                        finalstring += '#/Video/Temp#/CloudNAS/CloudDrive/WebDAV/PikPak/'
+                        finalstring += '#/Video/Temp#/CloudNAS/CloudDrive/WebDAV/PikPak/Mount'
                         finalstring += url.value.replace(/-/g, '/')
                         result.value = finalstring
                     }
