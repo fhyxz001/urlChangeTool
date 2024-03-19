@@ -79,9 +79,9 @@
                     if (url.value.indexOf('docker pull') !== -1) {
                         result.value = url.value.replace('pull ', 'pull docker.mirrors.sjtug.sjtu.edu.cn/')
                     } else {
-                        let finalstring = '#/CloudNAS/CloudDrive2/WebDAV/PikPak/Mount'
+                        let finalstring = '#/mnt/webdav/PikPak/Mount'
                         finalstring += url.value.replace(/-/g, '/')
-                        finalstring += '#/Media/Temp#/CloudNAS/CloudDrive2/WebDAV/PikPak/Mount'
+                        finalstring += '#/mnt/temp#/mnt/webdav/PikPak/Mount'
                         finalstring += url.value.replace(/-/g, '/')
                         result.value = finalstring
                     }
@@ -100,9 +100,9 @@
                     result.value = year + month + day
                     //去掉前两位
                     result.value = result.value.substring(2)
-                    let finalstring = '#/CloudNAS/CloudDrive2/WebDAV/PikPak/Mount'
+                    let finalstring = '#/mnt/webdav/PikPak/Mount'
                     finalstring += "/"+result.value
-                    finalstring += '#/Media/Temp#/CloudNAS/CloudDrive2/WebDAV/PikPak/Mount'
+                    finalstring += '#/mnt/temp#/mnt/webdav/PikPak/Mount'
                     finalstring += "/"+result.value
                     result.value = finalstring
                 }
@@ -111,7 +111,7 @@
                 let input = document.getElementById('result')
                 input.select()
                 document.execCommand('copy')
-                this.copyStatus = '√ 复制成功'
+                this.copyStatus = '√ 复制成功啦'
             }
         }
     }).mount('#app')
