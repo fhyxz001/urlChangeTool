@@ -79,9 +79,9 @@
                     if (url.value.indexOf('docker pull') !== -1) {
                         result.value = url.value.replace('pull ', 'pull docker.mirrors.sjtug.sjtu.edu.cn/')
                     } else {
-                        let finalstring = '#/mnt/webdav/PikPak/Mount'
+                        let finalstring = '/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
                         finalstring += url.value.replace(/-/g, '/')
-                        finalstring += '#/mnt/temp#/mnt/webdav/PikPak/Mount'
+                        finalstring += '#/mnt/temp#/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
                         finalstring += url.value.replace(/-/g, '/')
                         result.value = finalstring
                     }
@@ -100,9 +100,9 @@
                     result.value = year + month + day
                     //去掉前两位
                     result.value = result.value.substring(2)
-                    let finalstring = '#/mnt/webdav/PikPak/Mount'
+                    let finalstring = '/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
                     finalstring += "/"+result.value
-                    finalstring += '#/mnt/temp#/mnt/webdav/PikPak/Mount'
+                    finalstring += '#/mnt/temp#/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
                     finalstring += "/"+result.value
                     result.value = finalstring
                 }
