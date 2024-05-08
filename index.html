@@ -6,55 +6,46 @@
     <title>字符串格式化</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.11.1/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        clifford: '#8f6163',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body>
 <div id="app">
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto h-10 w-auto" src="nsfw.png">
+    <div>
+        <div>
+            <label >默认路径</label>
+            <input type="text"  class="input input-bordered w-full " v-model="defaultPath" id="defaultPath" name="defaultPath">
+            <label >挂载路径</label>
+            <input type="text"  class="input input-bordered w-full " v-model="MountPath" id="MountPath" name="MountPath">
         </div>
-
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <div style="margin-bottom: 20px">
-                <label for="url" class="block text-sm font-medium leading-6 text-gray-900">原始字符串</label>
-                <div class="mt-2">
-                    <input v-model="url" id="url" name="url"
-                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
+    </div>
+    <div>
+        <div>
+            <label for="url">原始字符串</label>
+            <div class="mt-2">
+                <input type="text" class="input input-bordered w-full" style="width: 560px" v-model="url" id="url" name="url">
             </div>
-            <div style="margin-bottom: 20px">
-                <button @click="parse"
-                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    格式化
-                </button>
+        </div>
+        <div>
+            <button class="btn btn-outline btn-primary" style="width: 100%;margin-top: 10px;margin-bottom: 10px;" @click="parse">
+                格式化
+            </button>
+        </div>
+        <div>
+            <div>
+                <label for="result">格式化结果</label>
             </div>
-            <div style="margin-bottom: 20px">
-                <div class="flex items-center justify-between">
-                    <label for="result" class="block text-sm font-medium leading-6 text-gray-900">格式化结果</label>
-                </div>
-                <div class="mt-2">
-                    <input id="result" name="result"
-                           class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
+            <div>
+                <input type="text" class="input input-bordered w-full " v-model="result" id="result" name="result">
             </div>
-            <div style="margin-top:20px">
-            <button @click="copy"
-                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        </div>
+        <div style="display: flex;justify-content: space-between" >
+            <button class="btn btn-outline" style="width: 100px;margin-top: 10px;margin-bottom: 10px;" @click="reset">
+                重置
+            </button>
+            <button class="btn btn-outline" style="width: 400px;margin-left: 5px;margin-top: 10px;margin-bottom: 10px;" @click="copy">
                 {{copyStatus}}
             </button>
-            </div>
         </div>
     </div>
 </div>
@@ -67,10 +58,10 @@
             const url = ref('')
             const result = ref('')
             const copyStatus = ref('复制')
+            const defaultPath = ref('/volume1/CloudNAS/CD/WebDAV/PikPak/Mount/')
+            const MountPath = ref('/volume1/Media/temp')
             return {
-                url,
-                result,
-                copyStatus
+                url, result, copyStatus, defaultPath, MountPath
             }
         },
         methods: {
@@ -79,42 +70,68 @@
                     if (url.value.indexOf('docker pull') !== -1) {
                         result.value = url.value.replace('pull ', 'pull docker.mirrors.sjtug.sjtu.edu.cn/')
                     } else {
-                        let finalstring = '/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
+                        let finalstring = defaultPath.value
                         finalstring += url.value.replace(/-/g, '/')
-                        finalstring += '#/mnt/temp#/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
+                        finalstring += '#'+MountPath.value+'#'+defaultPath.value
                         finalstring += url.value.replace(/-/g, '/')
                         result.value = finalstring
                     }
-                }else {
+                } else {
                     //获取当前日期，格式化为YYMMDD
                     let date = new Date()
                     let year = date.getFullYear()
                     let month = date.getMonth() + 1
                     let day = date.getDate()
-                    if(month < 10){
+                    if (month < 10) {
                         month = '0' + month
                     }
-                    if(day < 10){
+                    if (day < 10) {
                         day = '0' + day
                     }
                     result.value = year + month + day
                     //去掉前两位
                     result.value = result.value.substring(2)
-                    let finalstring = '/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
-                    finalstring += "/"+result.value
-                    finalstring += '#/mnt/temp#/mnt/CloudNAS/CloudDrive/WebDAV/Mount'
-                    finalstring += "/"+result.value
+                    let finalstring = defaultPath.value
+                    finalstring += "/" + result.value
+                    finalstring += '#'+MountPath.value+'#'
+                    finalstring += defaultPath.value
+                    finalstring += "/" + result.value
                     result.value = finalstring
                 }
+            //     格式化完之后，将defaultPath和MountPath的值存到localStorage
+                localStorage.setItem('defaultPath', defaultPath.value)
+                localStorage.setItem('MountPath', MountPath.value)
             },
             copy() {
                 let input = document.getElementById('result')
                 input.select()
                 document.execCommand('copy')
                 this.copyStatus = '√ 复制成功啦'
+            },
+            reset() {
+                this.url = ''
+                this.result.value = ''
+                this.copyStatus = '复制'
+                this.$nextTick(() => {
+                    document.getElementById('url').focus()
+                })
             }
+        },
+        mounted() {
+            //页面加载完毕，从localStorage中获取defaultPath和MountPath的值
+            this.defaultPath = localStorage.getItem('defaultPath')
+            this.MountPath = localStorage.getItem('MountPath')
         }
     }).mount('#app')
 </script>
+<style>
+    #app {
+        /*    居于屏幕正中心*/
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+    }
+</style>
 </body>
 </html>
